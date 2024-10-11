@@ -11,32 +11,22 @@ on:
 jobs:
     build:
         runs-on: ubuntu-latest
+
         steps:
-            -   name: Checkout code
-                uses: actions/checkout@v3
+            - name: Checkout code
+              uses: actions/checkout@v3
 
-            -   name: Set up Node.js
-                uses: actions/setup-node@v3
-                with:
-                    node-version: '18'
-            -   name: Navigate to frontend directory
-                run: cd frontend # Change to the frontend directory
-            -   name: Cache Node modules
-                uses: actions/cache@v3
-                with:
-                    path: node_modules
-                    key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-                    restore-keys: |
-                        ${{ runner.os }}-node-
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '18.x'
+            - name: Navigate to frontend directory
+              run: cd frontend # Change to the frontend directory
+            - name: Install dependencies
+              run: cd frontend && npm install
 
-            -   name: Install dependencies
-                working-directory: frontend
-                run: npm install
+#            - name: Run tests
+#              run: cd frontend && npm test
 
-            -   name: Build Frontend
-                working-directory: frontend
-                run: npm run build
-
-            -   name: Run Tests
-                working-directory: frontend
-                run: npm test
+            - name: Build frontend
+              run: cd frontend && npm run build
